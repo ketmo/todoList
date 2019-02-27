@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth/login');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Auth::routes();
 
+Route::resource('/', 'TodoController');
+Route::resource('todo', 'TodoController');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('users', 'UserController');
