@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a class="nav-link" href="{{ route('todo') }}">{{ __('TodoList') }}</a>
                 </div>
             </div>
         </div>

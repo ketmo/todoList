@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator, Input, Redirect; 
+use App\Todo;
 
 class TodoController extends Controller
 {
@@ -18,7 +20,12 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return view('layouts/todo');        
+        $todos = Todo::all();
+        // \Debugbar::info($books);
+        return view('layouts/todo',[
+            'todos' => $todos
+        ]);
+        // return view('layouts/todo');        
     }
 
     /**
@@ -86,4 +93,31 @@ class TodoController extends Controller
     {
         //
     }
+    public function postTodo(Request $request, $name)
+    {
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:255',
+        ]);
+
+        if($validator->fails()){
+            return redirect('/')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        // dd($request);
+        $todo = new Todo; //ORM
+        $todo->title = $request->name;
+        $todo->save();
+
+        return redirect('/');
+    }
+
+    public function deleteTodo(Todo $todo)
+    {
+        // dd($todo);
+        $todo->delete();
+        return redirect('/');
+    }
+
 }
